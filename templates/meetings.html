@@ -91,7 +91,7 @@
                                 <div class="d-inline-flex gap-1">
                                     <a class="btn btn-sm btn-outline-primary" href="{{ url_for('meeting_detail', meeting_id=data.meeting.id) }}" title="{{ _('View Details') }}"><i class="bi bi-eye"></i></a>
                                     <a class="btn btn-sm btn-outline-warning" href="{{ url_for('edit_meeting', meeting_id=data.meeting.id) }}" title="{{ _('Edit Meeting') }}"><i class="bi bi-pencil"></i></a>
-                                    <a class="btn btn-sm btn-outline-info" href="{{ url_for('generate_meeting_pdf', meeting_id=data.meeting.id) }}" title="{{ _('Generate PDF') }}"><i class="bi bi-file-earmark-pdf"></i></a>
+                                    <a class="btn btn-sm btn-outline-info" href="{{ url_for('print_meeting', meeting_id=data.meeting.id) }}" target="_blank" title="{{ _('Print View') }}"><i class="bi bi-printer"></i></a>
                                 </div>
                             </td>
                         </tr>
