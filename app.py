@@ -7,6 +7,7 @@ import json
 import datetime
 import re
 import base64
+import unicodedata
 from flask import (Flask, render_template, redirect, url_for,
                    flash, request, abort, make_response, session, jsonify)
 from flask_sqlalchemy import SQLAlchemy
@@ -390,13 +391,17 @@ def login():
     if current_user.is_authenticated: return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user and bcrypt.check_password_hash(user.password_hash, form.password.data):
+        raw_username = form.username.data or ''
+        # Normalize RTL/LTR and whitespace, and lowercase the username
+        username_clean = unicodedata.normalize('NFKC', raw_username).strip().lower()
+        user = User.query.filter(db.func.lower(User.username) == username_clean).first()
+        if user and bcrypt.check_password_hash(user.password_hash, form.password.data.strip()):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             flash(_('Login Successful!'), 'success')
             return redirect(next_page) if next_page else redirect(url_for('index'))
-        else: flash(_('Login Unsuccessful. Please check username and password'), 'danger')
+        else:
+            flash(_('Login Unsuccessful. Please check username and password'), 'danger')
     return render_template('login.html', title=_('Login'), form=form)
 
 @app.route('/logout')
