@@ -925,10 +925,13 @@ def print_meeting(meeting_id):
 
 
 # === Database Initialization ===
-@app.before_first_request
 def create_tables():
     """Create database tables if they don't exist"""
-    db.create_all()
+    with app.app_context():
+        db.create_all()
+
+# Create tables on startup
+create_tables()
 
 # === Main Execution Block ===
 if __name__ == '__main__':
