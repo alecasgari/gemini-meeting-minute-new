@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: meeting-minutes-app-new
+    restart: unless-stopped
+    volumes:
+      - ./instance:/app/instance
+      - ./static/images/custom:/app/static/images/custom      
+      - ./static/images/avatars:/app/static/images/avatars    
+    networks:
+      - npm_default
+
+networks:
+  npm_default:
+    external: true
