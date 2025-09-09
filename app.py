@@ -40,8 +40,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'a_very_secret_key_for_development_12345'
 basedir = os.path.abspath(os.path.dirname(__file__))
 # Ensure instance folder exists for persistent SQLite DB
-os.makedirs(app.instance_path, exist_ok=True)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.instance_path, 'site.db')
+instance_dir = os.path.join(basedir, 'instance')
+os.makedirs(instance_dir, exist_ok=True)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(instance_dir, 'site.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = os.path.join(basedir, 'static', 'images', 'custom')
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
